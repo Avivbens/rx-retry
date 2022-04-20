@@ -15,8 +15,8 @@ export class RxRetryService {
      * @param config - Override the main config - only selected fields
      * @returns Resolved value of the promise with type T (Generic)
      */
-    public resolveWithRetry<T = any>(promise: any, config?: ResolveRetryConfigWithLogger): Promise<T> {
-        const setConfig = config ? { ...this.mainConfig, ...config } : this.mainConfig
+    public resolveWithRetry<T = any>(promise: any, config?: Partial<ResolveRetryConfigWithLogger>): Promise<T> {
+        const setConfig = config ? { ...this.mainConfig, ...config } as ResolveRetryConfigWithLogger : this.mainConfig
         return resolveWithRetry(promise, setConfig)
     }
 }

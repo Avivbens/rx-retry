@@ -4,7 +4,7 @@ import { RxRetryService } from './rx-retry.service'
 
 @Module({})
 export class RxRetryModule {
-    static register(config: ResolveRetryConfigWithLogger): DynamicModule {
+    static register(config: ResolveRetryConfigWithLogger, isGlobal: boolean = false): DynamicModule {
         return {
             module: RxRetryModule,
             providers: [
@@ -15,10 +15,11 @@ export class RxRetryModule {
                 }
             ],
             exports: [RxRetryService],
+            global: isGlobal
         }
     }
 
-    static registerAsync(config: Provider<ResolveRetryConfigWithLogger>): DynamicModule {
+    static registerAsync(config: Provider<ResolveRetryConfigWithLogger>, isGlobal: boolean = false): DynamicModule {
         return {
             module: RxRetryModule,
             providers: [
@@ -26,6 +27,7 @@ export class RxRetryModule {
                 config,
             ],
             exports: [RxRetryService],
+            global: isGlobal
         }
     }
 }
