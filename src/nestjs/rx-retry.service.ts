@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { resolveWithRetry } from '../promises'
 import { ResolveRetryConfigWithLogger } from '../types'
-import { RxRetryConfig } from './rx-retry.module'
+import { RX_RETRY_CONFIG_KEY } from './keys'
 
 @Injectable()
 export class RxRetryService {
     constructor(
-        @Inject(RxRetryConfig) private readonly mainConfig: ResolveRetryConfigWithLogger
+        @Inject(RX_RETRY_CONFIG_KEY) private readonly mainConfig: ResolveRetryConfigWithLogger
     ) { }
 
     /**
