@@ -1,5 +1,4 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
 import { ResolveRetryConfigWithLogger } from '../types'
 import { RX_RETRY_CONFIG_KEY } from './keys'
 import { RxRetryService } from './rx-retry.service'
