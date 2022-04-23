@@ -11,6 +11,14 @@
         "prepare": "npm run build",
         "prepublish": "npm run build"
     },
+    "homepage": "https://github.com/Avivbens/rx-retry",
+    "publisher": "Aviv Ben Shahar",
+    "maintainers": [
+        {
+            "name": "Aviv Ben Shahar",
+            "email": "avivbens87@gmail.com"
+        }
+    ],
     "keywords": [],
     "author": "Aviv Ben Shahar",
     "license": "MIT",
