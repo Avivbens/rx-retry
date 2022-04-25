@@ -1,7 +1,6 @@
-import { Logger } from '@nestjs/common'
 import { from, lastValueFrom, timeout } from 'rxjs'
 import { backoffDelayWithRandom, exponentialBackoffDelay, retryBackoff } from '../operators/retry-backoff'
-import { AllRetryConfigOptions, ResolveRetryConfigWithLogger } from '../types'
+import { ResolveRetryConfig } from '../types'
 import { DEFAULT_RESOLVE_RETRY_CONFIG } from './resolve-retry-config'
 
 /**
@@ -16,8 +15,6 @@ import { DEFAULT_RESOLVE_RETRY_CONFIG } from './resolve-retry-config'
     const configuration: ResolveRetryConfig = {
         timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
         backoffWithRandom: true, // backoff strategy with random + exponantial delay, default is true
-        loggerRetry: 'Log this - retry', // add logging on retry, default is no logging
-        loggerError: 'Log this - error', // add logging on error, default is no logging
         retryStrategy: {
             initialInterval: 1000, // ms
             maxRetries: 3,
@@ -31,21 +28,16 @@ import { DEFAULT_RESOLVE_RETRY_CONFIG } from './resolve-retry-config'
  * @param config - Configuration for retry, can be number as the initial interval, OR ResolveRetryConfig
  * @returns Resolved value of the promise with type T (Generic)
  */
-export function resolveWithRetry<T = any>(promise: Promise<T> | any, config: AllRetryConfigOptions | number): Promise<T> {
-    const selectedConfig: AllRetryConfigOptions = typeof config === 'number' ? { ...DEFAULT_RESOLVE_RETRY_CONFIG, retryStrategy: { initialInterval: config } } : config
+export function resolveWithRetry<T = any>(promise: Promise<T> | any, config: ResolveRetryConfig | number): Promise<T> {
+    const selectedConfig: ResolveRetryConfig = typeof config === 'number' ? { ...DEFAULT_RESOLVE_RETRY_CONFIG, retryStrategy: { initialInterval: config } } : config
 
     const {
         retryStrategy,
-        loggerError,
-        loggerRetry,
         backoffWithRandom = DEFAULT_RESOLVE_RETRY_CONFIG.backoffWithRandom,
         timeoutTime = DEFAULT_RESOLVE_RETRY_CONFIG.timeoutTime,
-        loggerInstance = null
-    } = selectedConfig as ResolveRetryConfigWithLogger
+    } = selectedConfig as ResolveRetryConfig
 
     retryStrategy.backoffDelay ??= backoffWithRandom ? backoffDelayWithRandom : exponentialBackoffDelay
-    retryStrategy.onRetry ??= loggerRetry ? _retryAttempt.bind(null, loggerInstance, loggerRetry) : NOOP
-    retryStrategy.onFail ??= loggerError ? _failedRetry.bind(null, loggerInstance, loggerError) : NOOP
 
     const obs = from(promise as Promise<T>)
         .pipe(
@@ -55,23 +47,3 @@ export function resolveWithRetry<T = any>(promise: Promise<T> | any, config: All
 
     return lastValueFrom<T>(obs)
 }
-
-function _retryAttempt(logger: Logger | null, log: string, attempt: number) {
-    const toLog = `Retry attempt... ${log}, attempt: ${attempt}`
-    if (logger) {
-        logger.log(toLog)
-        return
-    }
-    console.log(toLog)
-}
-
-function _failedRetry(logger: Logger | null, log: string, error: Error) {
-    const toLog = `Retry failed, ${log}`
-    if (logger) {
-        logger.error(toLog, error.stack)
-        return
-    }
-    console.error(toLog, error.stack)
-}
-
-const NOOP = () => { }

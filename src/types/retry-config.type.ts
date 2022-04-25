@@ -1,19 +1,6 @@
-import { Logger } from '@nestjs/common'
 import { RetryBackoffConfig } from './retry-backoff.type'
 
-export type AllRetryConfigOptions = ResolveRetryConfig | ResolveRetryConfigWithLogger
-
 export interface ResolveRetryConfig {
-    /**
-     * Log to console on retry attempt.
-     * */
-    loggerRetry?: string
-
-    /**
-     * Log to console on retry error.
-     */
-    loggerError?: string
-
     /**
      * Fail promise and execute retry at this timeout.
      */
@@ -31,11 +18,3 @@ export interface ResolveRetryConfig {
      */
     retryStrategy: RetryBackoffConfig
 }
-
-export interface ResolveRetryConfigWithLogger extends ResolveRetryConfig {
-    /**
-     * Pass logger instance to log with.
-     */
-    loggerInstance?: Logger
-}
-

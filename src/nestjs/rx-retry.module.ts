@@ -1,11 +1,11 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common'
-import { ResolveRetryConfigWithLogger } from '../types'
+import { ResolveRetryConfig } from '../types'
 import { RX_RETRY_CONFIG_KEY } from './keys'
 import { RxRetryService } from './rx-retry.service'
 
 @Module({})
 export class RxRetryModule {
-    static register(config: ResolveRetryConfigWithLogger, isGlobal: boolean = false): DynamicModule {
+    static register(config: ResolveRetryConfig, isGlobal: boolean = false): DynamicModule {
         return {
             module: RxRetryModule,
             providers: [
@@ -22,7 +22,7 @@ export class RxRetryModule {
         }
     }
 
-    static registerAsync(config: AsyncProps<ResolveRetryConfigWithLogger>, isGlobal: boolean = false): DynamicModule {
+    static registerAsync(config: AsyncProps<ResolveRetryConfig>, isGlobal: boolean = false): DynamicModule {
         return {
             module: RxRetryModule,
             providers: [
