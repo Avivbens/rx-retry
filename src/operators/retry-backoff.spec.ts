@@ -1,6 +1,7 @@
 import { catchError, lastValueFrom, of, throwError } from 'rxjs'
 import { RetryBackoffConfig } from '../types'
-import { backoffDelayWithRandom, exponentialBackoffDelay, getDelay, retryBackoff } from './retry-backoff'
+import * as Functions from './retry-backoff'
+import { backoffDelayWithRandom, exponentialBackoffDelay, getDelay, resetIndexOnSuccess, retryBackoff } from './retry-backoff'
 
 describe('retryBackoff operator', () => {
     describe('getDelay', () => {
@@ -38,6 +39,18 @@ describe('retryBackoff operator', () => {
             jest.spyOn(Math, 'random').mockReturnValue(random)
             const result = backoffDelayWithRandom(iteration, initialInterval)
             expect(result).toBe(expected)
+        })
+    })
+
+    describe('resetIndexOnSuccess', () => {
+        it('should return 0 as value', () => {
+            const res = resetIndexOnSuccess(true, 100)
+            expect(res).toBe(0)
+        })
+
+        it('should return value as recived', () => {
+            const res = resetIndexOnSuccess(false, 100)
+            expect(res).toBe(100)
         })
     })
 
@@ -82,6 +95,53 @@ describe('retryBackoff operator', () => {
 
             expect(res).toBe(null)
             expect(onRetry).not.toBeCalled()
+        })
+
+        it.skip('should call the reset index and return 0', async () => {
+            jest.spyOn(Functions, 'resetIndexOnSuccess')
+            const onRetry = jest.fn()
+            const config: RetryBackoffConfig = {
+                initialInterval: 100,
+                maxRetries: 3,
+                resetOnSuccess: true,
+                onRetry
+            }
+
+            const source = throwError('error')
+
+            const res = await lastValueFrom(
+                source.pipe(
+                    retryBackoff(config),
+                    catchError(() => of('error'))
+                )
+            )
+
+            expect(res).toBe('error')
+            expect(Functions.resetIndexOnSuccess).toBeCalledWith(true, 3)
+            expect(Functions.resetIndexOnSuccess).toReturnWith(0)
+        })
+
+        it.skip('should call the reset index and return the index', async () => {
+            jest.spyOn(Functions, 'resetIndexOnSuccess')
+            const onRetry = jest.fn()
+            const config: RetryBackoffConfig = {
+                initialInterval: 100,
+                maxRetries: 3,
+                resetOnSuccess: true,
+                onRetry
+            }
+
+            const source = throwError('error')
+
+            const res = await lastValueFrom(
+                source.pipe(
+                    retryBackoff(config),
+                    catchError(() => of('error'))
+                )
+            )
+
+            expect(res).toBe('error')
+            expect(Functions.resetIndexOnSuccess).toBeCalledWith(false, 3)
         })
     })
 })

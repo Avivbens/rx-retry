@@ -15,6 +15,10 @@ export function backoffDelayWithRandom(iteration: number, initialInterval: numbe
     return toWait
 }
 
+export function resetIndexOnSuccess(isReset: boolean, index: number): number {
+    return isReset ? 0 : index
+}
+
 /**
  * An operator for RxJS pipe, that retry with exponential backoff / random exponential backoff OR custom function.
  * @param config - Configuration for retry, can be number as the initial interval, OR RetryBackoffConfig
@@ -48,9 +52,7 @@ export function retryBackoff(config: number | RetryBackoffConfig): <T>(source: O
                     ),
                 ),
                 tap(() => {
-                    if (resetOnSuccess) {
-                        index = 0
-                    }
+                    index = resetIndexOnSuccess(resetOnSuccess, index)
                 }),
             )
         })
