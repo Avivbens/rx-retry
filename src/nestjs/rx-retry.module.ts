@@ -40,4 +40,4 @@ export class RxRetryModule {
     }
 }
 
-interface AsyncProps<T> { useFactory: (...args: any[]) => Promise<T>, inject: any[], imports?: any[] }
+export interface AsyncProps<T> { useFactory: (...args: any[]) => Promise<T>, inject: any[], imports?: any[] }
