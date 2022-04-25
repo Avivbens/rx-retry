@@ -19,12 +19,21 @@
             "email": "avivbens87@gmail.com"
         }
     ],
-    "keywords": [],
+    "keywords": [
+        "rxjs",
+        "promise",
+        "nestjs",
+        "retry",
+        "retry-promise",
+        "retry-rxjs"
+    ],
     "author": "Aviv Ben Shahar",
     "license": "MIT",
     "dependencies": {
-        "@nestjs/common": "^8.0.0",
         "rxjs": "^7.5.5"
+    },
+    "peerDependencies": {
+        "@nestjs/common": "^8.0.0"
     },
     "devDependencies": {
         "typescript": "^4.6.3"
