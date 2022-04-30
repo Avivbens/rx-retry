@@ -1,4 +1,4 @@
-import { Observable, defer, retryWhen, concatMap, iif, timer, throwError, tap } from 'rxjs'
+import { catchError, concatMap, defer, iif, Observable, retryWhen, tap, throwError, timer } from 'rxjs'
 import { RetryBackoffConfig } from '../types/retry-backoff.type'
 
 export function getDelay(backoffDelay: number, maxInterval: number) {
@@ -42,12 +42,15 @@ export function retryBackoff(config: number | RetryBackoffConfig): <T>(source: O
                     errors.pipe(
                         concatMap((error) => {
                             const attempt = index++
-                            onRetry(attempt)
                             return iif(
                                 () => attempt < maxRetries && shouldRetry(error),
-                                timer(getDelay(backoffDelay(attempt, initialInterval), maxInterval)),
-                                throwError(error).pipe(tap(onFail)),
+                                timer(getDelay(backoffDelay(attempt, initialInterval), maxInterval)).pipe(tap(() => onRetry(attempt + 1))),
+                                throwError(error),
                             )
+                        }),
+                        catchError((error: Error) => {
+                            onFail(error)
+                            return throwError(error)
                         }),
                     ),
                 ),

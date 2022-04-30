@@ -55,12 +55,14 @@ describe('retryBackoff operator', () => {
     })
 
     describe('retryBackoff', () => {
-        it('should retry 3 times, call onRetry 4 times', async () => {
+        it('should retry 3 times, call onRetry 3 times and onFail', async () => {
             const onRetry = jest.fn()
+            const onFail = jest.fn()
             const config: RetryBackoffConfig = {
                 initialInterval: 100,
                 maxRetries: 3,
-                onRetry
+                onRetry,
+                onFail,
             }
 
             const source = throwError('error')
@@ -73,15 +75,18 @@ describe('retryBackoff operator', () => {
             )
 
             expect(res).toBe('error')
-            expect(onRetry).toBeCalledTimes(4)
+            expect(onRetry).toBeCalledTimes(3)
+            expect(onFail).toBeCalled()
         })
 
-        it('should not call onRetry', async () => {
+        it('should not call onRetry and onFail', async () => {
             const onRetry = jest.fn()
+            const onFail = jest.fn()
             const config: RetryBackoffConfig = {
                 initialInterval: 100,
                 maxRetries: 3,
-                onRetry
+                onRetry,
+                onFail,
             }
 
             const source = of(null)
@@ -95,6 +100,7 @@ describe('retryBackoff operator', () => {
 
             expect(res).toBe(null)
             expect(onRetry).not.toBeCalled()
+            expect(onFail).not.toBeCalled()
         })
 
         it.skip('should call the reset index and return 0', async () => {
