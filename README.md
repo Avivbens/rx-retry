@@ -2,7 +2,13 @@
     RX-Retry for JS and TS, using RxJS, support for Node.js & NestJS and browsers
 </h1>
 
-#### Provide handling for Observables AND Promises retries, with a configurable delay between retries.
+## Has default configuration of random-backoff retry and backoff retry
+Read this article for more details:
+[AWS Exponential Backoff and Jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/)
+<br>
+<br>
+
+### Provide handling for Observables AND Promises retries, with a configurable delay between retries.
 
 <br>
 
