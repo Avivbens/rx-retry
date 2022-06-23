@@ -44,7 +44,7 @@ export function retryBackoff(config: number | RetryBackoffConfig): <T>(source: O
                             const attempt = index++
                             return iif(
                                 () => attempt < maxRetries && shouldRetry(error),
-                                timer(getDelay(backoffDelay(attempt, initialInterval), maxInterval)).pipe(tap(() => onRetry(attempt + 1))),
+                                timer(getDelay(backoffDelay(attempt, initialInterval), maxInterval)).pipe(tap(() => onRetry(attempt + 1, error))),
                                 throwError(error),
                             )
                         }),
