@@ -15,8 +15,10 @@ npm i rx-retry
 ## Usage
 
 ```typescript
-import { resolveWithRetry, ResolveRetryConfig } from 'rx-retry';
+import { resolveWithRetry, ResolveRetryConfig, retryBackoff } from 'rx-retry';
+import { throwError } from 'rxjs'
 
+// Use on a promise
 (() => {
     const prm = new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -38,6 +40,38 @@ import { resolveWithRetry, ResolveRetryConfig } from 'rx-retry';
     }
     const res = await resolveWithRetry(prm, configuration);
 })();
+
+// Use on Observable, will be converted into promise
+(() => {
+    const obs = throwError('Observable error')
+
+    const configuration: ResolveRetryConfig = {
+        timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
+        backoffWithRandom: true, // backoff strategy with random + exponantial delay, default is true
+        loggerRetry: 'Log this - retry', // add logging on retry, default is no logging
+        loggerError: 'Log this - error', // add logging on error, default is no logging
+        retryStrategy: {
+            initialInterval: 1000, // ms
+            maxRetries: 3,
+            maxInterval: 10000, // ms
+            shouldRetry: (error) => true, // check if retry needed, default is always true
+        }
+    }
+    const res = await resolveWithRetry(obs, configuration);
+})();
+
+// Using the custom operator function in a pipe
+(() => {
+    const obs = throwError('Observable error')
+
+    obs.pipe(
+            retryBackoff({
+                initialInterval: 1000,
+                maxInterval: 10000,
+                maxRetries: 5,
+            })
+        )
+})();
 ```
 
 <br>
@@ -50,7 +84,7 @@ import { resolveWithRetry, ResolveRetryConfig } from 'rx-retry';
 ```typescript
 import { Module } from '@nestjs/common'
 import { TestingService } from './testing.service'
-import { RxRetryModule } from "rx-retry"
+import { RxRetryModule } from 'rx-retry'
 
 @Module({
     imports: [
@@ -65,7 +99,7 @@ import { RxRetryModule } from "rx-retry"
                 maxInterval: 10000, // ms
                 shouldRetry: (error) => true, // check if retry needed, default is always true
             }
-        })
+        }, true) // set module as global
     ],
     providers: [TestingService]
 })
@@ -81,7 +115,7 @@ export class TestingModule { }
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TestingService } from './testing.service'
-import { RxRetryModule } from "rx-retry"
+import { RxRetryModule } from 'rx-retry'
 
 @Module({
     imports: [
@@ -108,7 +142,7 @@ import { RxRetryModule } from "rx-retry"
 
                 return configuration
             }
-        })
+        }, true) // set module as global
     ],
     providers: [TestingService]
 })
@@ -122,6 +156,7 @@ export class TestingModule { }
 ```typescript
 import { Injectable } from '@nestjs/common'
 import { RxRetryService } from 'rx-retry'
+import { catchError, from, Observable, of, throwError } from 'rxjs'
 
 @Injectable()
 export class TestingService {
@@ -139,6 +174,42 @@ export class TestingService {
         return this.rxRetry.resolveWithRetry(this._getPromise(), {
             loggerInstance: this.logger
         })
+    }
+
+    // Resolve Obsevable into promise with global config
+    public resolveWithRetryObs() {
+        return this.rxRetry.resolveWithRetry(this._getObs())
+    }
+
+    // Using the basic operator
+    public resolveWithRetryObsPipe() {
+        return this._getObs().pipe(
+            retryBackoff({
+                initialInterval: 1000,
+                maxInterval: 10000,
+                maxRetries: 5,
+                onRetry(attempt) {
+                    console.log('attempt :>> ', attempt)
+                },
+            })
+        )
+    }
+
+    // Run over part of the main configuration
+    public resolveWithRetryObsGlobal() {
+        return this._getObs().pipe(
+            this.rxRetry.resolveWithRetryOperator({
+                initialInterval: 1000,
+                onRetry(attempt) {
+                    console.log('attempt :>> ', attempt)
+                },
+            })
+        )
+    }
+
+
+    private _getObs() {
+        return throwError('Observable error')
     }
 
     private _getPromise() {
