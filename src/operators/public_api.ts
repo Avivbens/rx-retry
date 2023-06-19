@@ -1,1 +1,1 @@
-export * from './retry-backoff'
+export { retryBackoff } from './retry-backoff'
