@@ -47,12 +47,13 @@ export function resolveWithRetry<T = any>(promise: Promise<T> | any, config: All
     retryStrategy.onRetry ??= loggerRetry ? _retryAttempt.bind(null, loggerInstance, loggerRetry) : NOOP
     retryStrategy.onFail ??= loggerError ? _failedRetry.bind(null, loggerInstance, loggerError) : NOOP
 
-    return lastValueFrom<T>(
-        from(promise as Promise<T>).pipe(
+    const obs = from(promise as Promise<T>)
+        .pipe(
             timeout(timeoutTime as number),
             retryBackoff(retryStrategy),
-        ),
-    )
+        )
+
+    return lastValueFrom<T>(obs)
 }
 
 function _retryAttempt(logger: Logger | null, log: string, attempt: number) {
