@@ -1,4 +1,7 @@
-node_modules
-/lib
+/.idea/
+/dist/
+/temp/
+/node_modules/
+/lib/
 .DS_Store
 coverage

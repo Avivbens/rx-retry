@@ -1,7 +1,11 @@
-import { DynamicModule, Module, Provider } from '@nestjs/common'
-import { ResolveRetryConfig } from '../types'
-import { RX_RETRY_CONFIG_KEY } from './keys'
-import { RxRetryService } from './rx-retry.service'
+
+import { DynamicModule, Module, Provider } from '@nestjs/common';
+
+import type { ResolveRetryConfig } from '../types';
+
+import { RX_RETRY_CONFIG_KEY } from './keys';
+import { RxRetryService } from './rx-retry.service';
+
 
 @Module({})
 export class RxRetryModule {

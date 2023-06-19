@@ -1,0 +1,9 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "tsconfig": "tsconfig.lib.json",
+  "entryPoints": ["src/index.ts"],
+  "out": "../../docs",
+  "json": "temp/typedoc.json",
+  "cleanOutputDir": true,
+  "excludeExternals": true
+}

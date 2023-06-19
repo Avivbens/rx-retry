@@ -1,69 +1,91 @@
 {
-    "name": "rx-retry",
-    "version": "2.1.1",
-    "description": "Package for retries in RxJS, Promises and NestJS",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
-    "scripts": {
-        "distribute": "npm run build && npm publish",
-        "build": "tsc",
-        "test": "jest",
-        "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-        "prepare": "npm run build",
-        "prepublish": "npm run build"
-    },
-    "homepage": "https://github.com/Avivbens/rx-retry",
-    "publisher": "Aviv Ben Shahar",
-    "maintainers": [
-        {
-            "name": "Aviv Ben Shahar",
-            "email": "avivbens87@gmail.com"
-        }
-    ],
-    "keywords": [
-        "rxjs",
-        "promise",
-        "nestjs",
-        "retry",
-        "retry-promise",
-        "retry-rxjs"
-    ],
-    "author": "Aviv Ben Shahar",
-    "license": "MIT",
-    "dependencies": {
-        "rxjs": "^7.5.5"
-    },
-    "peerDependencies": {
-        "@nestjs/common": ">=8.0.0"
-    },
-    "devDependencies": {
-        "@nestjs/config": "^2.0.0",
-        "@nestjs/testing": "^8.4.4",
-        "@types/jest": "^27.4.1",
-        "jest": "^27.5.1",
-        "jest-cli": "^27.5.1",
-        "ts-jest": "^27.1.4",
-        "typescript": "^4.6.3"
-    },
-    "files": [
-        "lib/**/*"
-    ],
-    "jest": {
-        "moduleFileExtensions": [
-            "js",
-            "json",
-            "ts"
-        ],
-        "rootDir": "src",
-        "testRegex": ".*\\.spec\\.ts$",
-        "transform": {
-            "^.+\\.(t|j)s$": "ts-jest"
-        },
-        "collectCoverageFrom": [
-            "**/*.(t|j)s"
-        ],
-        "coverageDirectory": "../coverage",
-        "testEnvironment": "node",
-        "clearMocks": true
+  "name": "rx-retry",
+  "version": "2.1.1",
+  "description": "Package for retries in RxJS, Promises and NestJS",
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "run-s clean build:types build:esbuild",
+    "clean": "rm -rf ./dist",
+    "build:esbuild": "ts-node ./esbuild.ts",
+    "build:types": "run-s build:types:compile build:types:extract",
+    "build:types:compile": "tsc -p ./tsconfig.lib.json",
+    "build:types:extract": "api-extractor run --local --verbose",
+    "typedoc": "typedoc --darkHighlightTheme dark-plus",
+    "test": "jest",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "prepublishOnly": "run-s build"
+  },
+  "homepage": "https://github.com/Avivbens/rx-retry",
+  "publisher": "Aviv Ben Shahar",
+  "maintainers": [
+    {
+      "name": "Aviv Ben Shahar",
+      "email": "avivbens87@gmail.com"
     }
+  ],
+  "keywords": [
+    "rxjs",
+    "promise",
+    "nestjs",
+    "retry",
+    "retry-promise",
+    "retry-rxjs"
+  ],
+  "author": "Aviv Ben Shahar",
+  "contributors": [
+    {
+      "name": "Slava Fomin II",
+      "email": "slava@fomin.io",
+      "url": "https://github.com/slavafomin"
+    }
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@nestjs/common": ">=8.0.0",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.35.4",
+    "@nestjs/config": "^2.0.0",
+    "@nestjs/testing": "^8.4.4",
+    "@tsconfig/node-lts-strictest-esm": "^18.12.1",
+    "@types/jest": "^27.4.1",
+    "esbuild": "^0.17.19",
+    "esbuild-node-externals": "^1.7.0",
+    "jest": "^27.5.1",
+    "jest-cli": "^27.5.1",
+    "npm-run-all": "^4.1.5",
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.24.8",
+    "typescript": "^4.6.3"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "clearMocks": true
+  }
 }

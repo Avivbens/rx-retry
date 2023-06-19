@@ -1,5 +1,8 @@
-import { catchError, concatMap, defer, iif, Observable, retryWhen, tap, throwError, timer } from 'rxjs'
-import { RetryBackoffConfig } from '../types/retry-backoff.type'
+
+import type { RetryBackoffConfig } from '../types/retry-backoff.type';
+
+import { catchError, concatMap, defer, iif, Observable, retryWhen, tap, throwError, timer } from 'rxjs';
+
 
 export function getDelay(backoffDelay: number, maxInterval: number) {
     return Math.min(backoffDelay, maxInterval)

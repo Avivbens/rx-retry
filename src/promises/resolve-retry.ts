@@ -1,7 +1,9 @@
-import { from, lastValueFrom, timeout } from 'rxjs'
-import { backoffDelayWithRandom, exponentialBackoffDelay, retryBackoff } from '../operators/retry-backoff'
-import { ResolveRetryConfig } from '../types'
-import { DEFAULT_RESOLVE_RETRY_CONFIG } from './resolve-retry-config'
+
+import type { ResolveRetryConfig } from '../types';
+
+import { from, lastValueFrom, timeout } from 'rxjs';
+import { backoffDelayWithRandom, exponentialBackoffDelay, retryBackoff } from '../operators/retry-backoff';
+import { DEFAULT_RESOLVE_RETRY_CONFIG } from './resolve-retry-config';
 
 /**
  * Retry a promise with exponential backoff.
