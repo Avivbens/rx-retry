@@ -15,7 +15,10 @@ export function backoffDelayWithRandom(iteration: number, initialInterval: numbe
     return toWait
 }
 
-
+/**
+ * An operator for RxJS pipe, that retry with exponential backoff / random exponential backoff OR custom function.
+ * @param config - Configuration for retry, can be number as the initial interval, OR RetryBackoffConfig
+ */
 export function retryBackoff(config: number | RetryBackoffConfig): <T>(source: Observable<T>) => Observable<T> {
     const {
         initialInterval,

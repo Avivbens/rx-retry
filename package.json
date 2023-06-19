@@ -7,7 +7,7 @@
     "scripts": {
         "distribute": "npm run build && npm publish",
         "build": "tsc",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
         "prepare": "npm run build",
         "prepublish": "npm run build"
     },
@@ -36,9 +36,33 @@
         "@nestjs/common": "^8.0.0"
     },
     "devDependencies": {
+        "@nestjs/config": "^2.0.0",
+        "@nestjs/testing": "^8.4.4",
+        "@types/jest": "^27.4.1",
+        "jest": "^27.5.1",
+        "jest-cli": "^27.5.1",
+        "ts-jest": "^27.1.4",
         "typescript": "^4.6.3"
     },
     "files": [
         "lib/**/*"
-    ]
+    ],
+    "jest": {
+        "moduleFileExtensions": [
+            "js",
+            "json",
+            "ts"
+        ],
+        "rootDir": "src",
+        "testRegex": ".*\\.spec\\.ts$",
+        "transform": {
+            "^.+\\.(t|j)s$": "ts-jest"
+        },
+        "collectCoverageFrom": [
+            "**/*.(t|j)s"
+        ],
+        "coverageDirectory": "../coverage",
+        "testEnvironment": "node",
+        "clearMocks": true
+    }
 }
