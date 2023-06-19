@@ -33,10 +33,10 @@ export interface RetryBackoffConfig {
     /**
      * Execute this function on each retry
      */
-    onRetry?: (attempt: number) => void
+    onRetry?: (attempt: number, error: Error) => void
 
     /**
      * Execute this function on error
      */
-    onFail?: (err: Error) => void
+    onFail?: (error: Error) => void
 }

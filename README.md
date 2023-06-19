@@ -38,7 +38,7 @@ import { throwError } from 'rxjs'
         retryStrategy: {
             initialInterval: 1000, // ms
             maxRetries: 3,
-            onRetry(attempt: number) {
+            onRetry: (attempt: number, error: Error) => {
                 console.log('Log this - retry') // adding action on retry
             },
             maxInterval: 10000, // ms
@@ -58,7 +58,7 @@ import { throwError } from 'rxjs'
         retryStrategy: {
             initialInterval: 1000, // ms
             maxRetries: 3,
-            onRetry(attempt: number) {
+            onRetry: (attempt: number, error: Error) => {
                 console.log('Log this - retry') // adding action on retry
             },
             maxInterval: 10000, // ms
@@ -177,7 +177,7 @@ export class TestingService {
     public runOverConfiguration() {
         return this.rxRetry.resolveWithRetry(this._getPromise(), {
             retryStrategy: {
-                onRetry: (attempt: number) => {
+                onRetry: (attempt: number, error: Error) => {
                     this.logger.log(`Retry attempt ${attempt}`)
                 }
             }
@@ -196,7 +196,7 @@ export class TestingService {
                 initialInterval: 1000,
                 maxInterval: 10000,
                 maxRetries: 5,
-                onRetry(attempt: number) {
+                onRetry: (attempt: number, error: Error) => {
                     console.log('attempt :>> ', attempt)
                 },
             })
@@ -208,7 +208,7 @@ export class TestingService {
         return this._getObs().pipe(
             this.rxRetry.resolveWithRetryOperator({
                 initialInterval: 1000,
-                onRetry: (attempt: number) => {
+                onRetry: (attempt: number, error: Error) => {
                     this.logger.debug('attempt :>> ', attempt)
                 },
             })

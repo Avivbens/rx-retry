@@ -76,6 +76,9 @@ describe('retryBackoff operator', () => {
 
             expect(res).toBe('error')
             expect(onRetry).toBeCalledTimes(3)
+            expect(onRetry).toBeCalledWith(1, 'error')
+            expect(onRetry).toBeCalledWith(2, 'error')
+            expect(onRetry).toBeCalledWith(3, 'error')
             expect(onFail).toBeCalled()
         })
 
