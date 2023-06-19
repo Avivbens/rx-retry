@@ -174,7 +174,7 @@ export class TestingService {
     }
 
     // run over only for loggerInstance, passing it to log with it
-    public runOverCOnfiguration() {
+    public runOverConfiguration() {
         return this.rxRetry.resolveWithRetry(this._getPromise(), {
             retryStrategy: {
                 onRetry: (attempt: number) => {
