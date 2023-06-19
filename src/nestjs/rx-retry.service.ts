@@ -3,6 +3,7 @@ import { Observable } from 'rxjs'
 import { retryBackoff } from '../operators'
 import { resolveWithRetry } from '../promises'
 import { ResolveRetryConfig, RetryBackoffConfig } from '../types'
+import { PartialDeep } from '../types/deep-partial'
 import { RX_RETRY_CONFIG_KEY } from './keys'
 
 @Injectable()
@@ -17,7 +18,7 @@ export class RxRetryService {
      * @param config - Override the main config - only selected fields
      * @returns Resolved value of the promise with type T (Generic)
      */
-    public resolveWithRetry<T = any>(promise: Promise<any> | Observable<any>, config?: Partial<ResolveRetryConfig>): Promise<T> {
+    public resolveWithRetry<T = any>(promise: Promise<any> | Observable<any>, config?: PartialDeep<ResolveRetryConfig>): Promise<T> {
         const setConfig = config ? { ...this.mainConfig, ...config, retryStrategy: { ...this.mainConfig.retryStrategy, ...(config?.retryStrategy ?? {}) } } as ResolveRetryConfig : this.mainConfig
         return resolveWithRetry(promise, setConfig)
     }

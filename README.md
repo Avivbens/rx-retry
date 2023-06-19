@@ -29,11 +29,12 @@ import { throwError } from 'rxjs'
     const configuration: ResolveRetryConfig = {
         timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
         backoffWithRandom: true, // backoff strategy with random + exponantial delay, default is true
-        loggerRetry: 'Log this - retry', // add logging on retry, default is no logging
-        loggerError: 'Log this - error', // add logging on error, default is no logging
         retryStrategy: {
             initialInterval: 1000, // ms
             maxRetries: 3,
+            onRetry(attempt: number) {
+                console.log('Log this - retry') // adding action on retry
+            },
             maxInterval: 10000, // ms
             shouldRetry: (error) => true, // check if retry needed, default is always true
         }
@@ -48,11 +49,12 @@ import { throwError } from 'rxjs'
     const configuration: ResolveRetryConfig = {
         timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
         backoffWithRandom: true, // backoff strategy with random + exponantial delay, default is true
-        loggerRetry: 'Log this - retry', // add logging on retry, default is no logging
-        loggerError: 'Log this - error', // add logging on error, default is no logging
         retryStrategy: {
             initialInterval: 1000, // ms
             maxRetries: 3,
+            onRetry(attempt: number) {
+                console.log('Log this - retry') // adding action on retry
+            },
             maxInterval: 10000, // ms
             shouldRetry: (error) => true, // check if retry needed, default is always true
         }
@@ -91,8 +93,6 @@ import { RxRetryModule } from 'rx-retry'
         RxRetryModule.register({
             timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
             backoffWithRandom: true, // backoff strategy with random + exponantial delay, default is true
-            loggerRetry: 'Log this - retry', // add logging on retry, default is no logging
-            loggerError: 'Log this - error', // add logging on error, default is no logging
             retryStrategy: {
                 initialInterval: 1000, // ms
                 maxRetries: 3,
@@ -131,8 +131,6 @@ import { RxRetryModule } from 'rx-retry'
                 const configuration = {
                     timeoutTime: +conf.get('timeoutTime'), // set timeout to fail the promise and retry, default is 0
                     backoffWithRandom: !!conf.get('backoffWithRandom'), // backoff strategy with random + exponantial delay, default is true
-                    loggerRetry: 'Log this - retry', // add logging on retry, default is no logging
-                    loggerError: 'Log this - error', // add logging on error, default is no logging
                     retryStrategy: {
                         initialInterval: +conf.get('initialInterval'), // ms
                         maxRetries: +conf.get('maxRetries'),
@@ -172,7 +170,11 @@ export class TestingService {
     // run over only for loggerInstance, passing it to log with it
     public runOverCOnfiguration() {
         return this.rxRetry.resolveWithRetry(this._getPromise(), {
-            loggerInstance: this.logger
+            retryStrategy: {
+                onRetry: (attempt: number) => {
+                    this.logger.log(`Retry attempt ${attempt}`)
+                }
+            }
         })
     }
 
@@ -188,7 +190,7 @@ export class TestingService {
                 initialInterval: 1000,
                 maxInterval: 10000,
                 maxRetries: 5,
-                onRetry(attempt) {
+                onRetry(attempt: number) {
                     console.log('attempt :>> ', attempt)
                 },
             })
@@ -200,8 +202,8 @@ export class TestingService {
         return this._getObs().pipe(
             this.rxRetry.resolveWithRetryOperator({
                 initialInterval: 1000,
-                onRetry(attempt) {
-                    console.log('attempt :>> ', attempt)
+                onRetry: (attempt: number) => {
+                    this.logger.debug('attempt :>> ', attempt)
                 },
             })
         )
