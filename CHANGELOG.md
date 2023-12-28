@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/Avivbens/rx-retry/compare/v2.1.1...v2.1.2) (2023-12-28)
+
+
+### Bug Fixes
+
+* workflow ([ba8e7d6](https://github.com/Avivbens/rx-retry/commit/ba8e7d6a885d85f116ff67cc2e594b9df702d1b8))
+
 # 2.1.1 (2023-12-28)
 
 ### Bug Fixes
