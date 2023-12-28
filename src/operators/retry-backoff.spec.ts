@@ -1,14 +1,20 @@
 import { catchError, lastValueFrom, of, throwError } from 'rxjs'
-import { RetryBackoffConfig } from '../types'
+import type { RetryBackoffConfig } from '../types'
 import * as Functions from './retry-backoff'
-import { backoffDelayWithRandom, exponentialBackoffDelay, getDelay, resetIndexOnSuccess, retryBackoff } from './retry-backoff'
+import {
+    backoffDelayWithRandom,
+    exponentialBackoffDelay,
+    getDelay,
+    resetIndexOnSuccess,
+    retryBackoff,
+} from './retry-backoff'
 
 describe('retryBackoff operator', () => {
     describe('getDelay', () => {
         it.each([
             [0, 0, 0],
             [2, 5, 2],
-            [8, 4, 4]
+            [8, 4, 4],
         ])('should return mix value of 2 numbers', (n1, n2, min) => {
             const result = getDelay(n1, n2)
             expect(result).toBe(min)
@@ -35,11 +41,14 @@ describe('retryBackoff operator', () => {
             { iteration: 2, initialInterval: 1000, expected: 4000 * 0.4, random: 0.4 },
             { iteration: 3, initialInterval: 2000, expected: 16000 * 0.6, random: 0.6 },
             { iteration: 4, initialInterval: 4000, expected: 64000 * 0.7, random: 0.7 },
-        ])('should return exponential delay between random of backoff iteration and 0', ({ iteration, initialInterval, expected, random }) => {
-            jest.spyOn(Math, 'random').mockReturnValue(random)
-            const result = backoffDelayWithRandom(iteration, initialInterval)
-            expect(result).toBe(expected)
-        })
+        ])(
+            'should return exponential delay between random of backoff iteration and 0',
+            ({ iteration, initialInterval, expected, random }) => {
+                jest.spyOn(Math, 'random').mockReturnValue(random)
+                const result = backoffDelayWithRandom(iteration, initialInterval)
+                expect(result).toBe(expected)
+            },
+        )
     })
 
     describe('resetIndexOnSuccess', () => {
@@ -70,8 +79,8 @@ describe('retryBackoff operator', () => {
             const res = await lastValueFrom(
                 source.pipe(
                     retryBackoff(config),
-                    catchError(() => of('error'))
-                )
+                    catchError(() => of('error')),
+                ),
             )
 
             expect(res).toBe('error')
@@ -97,8 +106,8 @@ describe('retryBackoff operator', () => {
             const res = await lastValueFrom(
                 source.pipe(
                     retryBackoff(config),
-                    catchError(() => of('error'))
-                )
+                    catchError(() => of('error')),
+                ),
             )
 
             expect(res).toBe(null)
@@ -113,7 +122,7 @@ describe('retryBackoff operator', () => {
                 initialInterval: 100,
                 maxRetries: 3,
                 resetOnSuccess: true,
-                onRetry
+                onRetry,
             }
 
             const source = throwError('error')
@@ -121,8 +130,8 @@ describe('retryBackoff operator', () => {
             const res = await lastValueFrom(
                 source.pipe(
                     retryBackoff(config),
-                    catchError(() => of('error'))
-                )
+                    catchError(() => of('error')),
+                ),
             )
 
             expect(res).toBe('error')
@@ -137,7 +146,7 @@ describe('retryBackoff operator', () => {
                 initialInterval: 100,
                 maxRetries: 3,
                 resetOnSuccess: true,
-                onRetry
+                onRetry,
             }
 
             const source = throwError('error')
@@ -145,8 +154,8 @@ describe('retryBackoff operator', () => {
             const res = await lastValueFrom(
                 source.pipe(
                     retryBackoff(config),
-                    catchError(() => of('error'))
-                )
+                    catchError(() => of('error')),
+                ),
             )
 
             expect(res).toBe('error')

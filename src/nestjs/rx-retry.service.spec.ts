@@ -1,24 +1,21 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { RxRetryModule, RxRetryService } from "."
+/* eslint-disable @typescript-eslint/no-empty-function */
+import type { TestingModule } from '@nestjs/testing'
+import { Test } from '@nestjs/testing'
+import { RxRetryModule, RxRetryService } from '.'
 import { ASYNC_CONFIG, SYNC_CONFIG } from './__mocks__/sync-config.mock'
 import * as resolve from '../promises/resolve-retry'
 import { ConfigModule } from '@nestjs/config'
 import * as Operators from '../operators/retry-backoff'
 
-
-
 describe.each([
     { configType: 'register', config: SYNC_CONFIG },
-    { configType: 'registerAsync', config: ASYNC_CONFIG }
+    { configType: 'registerAsync', config: ASYNC_CONFIG },
 ])('RxRetryService  -X', ({ config, configType }) => {
     let service: RxRetryService
 
     beforeEach(async () => {
         const app: TestingModule = await Test.createTestingModule({
-            imports: [
-                ConfigModule.forRoot({ isGlobal: true }),
-                (RxRetryModule as any)[configType](config),
-            ]
+            imports: [ConfigModule.forRoot({ isGlobal: true }), (RxRetryModule as any)[configType](config)],
         }).compile()
 
         service = app.get<RxRetryService>(RxRetryService)
@@ -34,8 +31,8 @@ describe.each([
 
     describe('resolveWithRetry', () => {
         it('should call resolveWithRetry outside function with main config', async () => {
-            const prm = new Promise(() => { })
-            jest.spyOn(resolve, 'resolveWithRetry').mockImplementation(async () => { })
+            const prm = new Promise(() => {})
+            jest.spyOn(resolve, 'resolveWithRetry').mockImplementation(async () => {})
 
             await service.resolveWithRetry(prm as any)
 
@@ -43,8 +40,8 @@ describe.each([
         })
 
         it('should call resolveWithRetry outside function with main config, running over timeoutTime', async () => {
-            const prm = new Promise(() => { })
-            jest.spyOn(resolve, 'resolveWithRetry').mockImplementation(async () => { })
+            const prm = new Promise(() => {})
+            jest.spyOn(resolve, 'resolveWithRetry').mockImplementation(async () => {})
 
             await service.resolveWithRetry(prm as any, { timeoutTime: 100 })
 
@@ -52,17 +49,20 @@ describe.each([
         })
 
         it('should call resolveWithRetry outside function with main config, running over onRetry', async () => {
-            const prm = new Promise(() => { })
+            const prm = new Promise(() => {})
             const onRetryFn = jest.fn()
-            jest.spyOn(resolve, 'resolveWithRetry').mockImplementation(async () => { })
+            jest.spyOn(resolve, 'resolveWithRetry').mockImplementation(async () => {})
 
             await service.resolveWithRetry(prm as any, {
                 retryStrategy: {
-                    onRetry: onRetryFn
-                }
+                    onRetry: onRetryFn,
+                },
             })
 
-            expect(resolve.resolveWithRetry).toBeCalledWith(prm, { ...SYNC_CONFIG, retryStrategy: { ...SYNC_CONFIG.retryStrategy, onRetry: onRetryFn } })
+            expect(resolve.resolveWithRetry).toBeCalledWith(prm, {
+                ...SYNC_CONFIG,
+                retryStrategy: { ...SYNC_CONFIG.retryStrategy, onRetry: onRetryFn },
+            })
         })
     })
 
@@ -78,7 +78,7 @@ describe.each([
             const onRetry = jest.fn()
             jest.spyOn(Operators, 'retryBackoff')
             service.resolveWithRetryOperator({
-                onRetry
+                onRetry,
             })
 
             expect(Operators.retryBackoff).toBeCalledWith({ ...SYNC_CONFIG.retryStrategy, onRetry })
