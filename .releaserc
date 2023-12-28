@@ -39,7 +39,7 @@
         [
             "@semantic-release/github",
             {
-                "githubUrl": "https://github.com/",
+                "githubUrl": "https://api.github.com/",
                 "githubApiPathPrefix": "/api/v3"
             }
         ]

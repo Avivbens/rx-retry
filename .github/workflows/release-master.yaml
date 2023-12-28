@@ -67,7 +67,7 @@ jobs:
 
             - name: Setup NPM
               run: |
-                  npm config -L user set //registry.npmjs.org/:_auth=${{ secrets.NPM_TOKEN }}
+                  npm config -L user set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
 
             - name: Release
               env:
