@@ -1,4 +1,4 @@
-import { ResolveRetryConfig } from '../types'
+import type { ResolveRetryConfig } from '../types'
 import { resolveWithRetry } from './resolve-retry'
 import * as Operators from '../operators/retry-backoff'
 import * as RX from 'rxjs'
@@ -14,14 +14,17 @@ describe('resolveWithRetry Promises', () => {
                 retryStrategy: {
                     initialInterval: 100,
                     maxInterval: 100,
-                    maxRetries: 3
-                }
+                    maxRetries: 3,
+                },
             }
 
             const res = await resolveWithRetry(getPrm(), config)
 
             expect(res).toBe('test')
-            expect(Operators.retryBackoff).toBeCalledWith({ ...config.retryStrategy, backoffDelay: Operators.backoffDelayWithRandom })
+            expect(Operators.retryBackoff).toBeCalledWith({
+                ...config.retryStrategy,
+                backoffDelay: Operators.backoffDelayWithRandom,
+            })
         })
 
         it('should set delay function based on random flag 1', async () => {
@@ -33,15 +36,18 @@ describe('resolveWithRetry Promises', () => {
                 retryStrategy: {
                     initialInterval: 100,
                     maxInterval: 100,
-                    maxRetries: 3
+                    maxRetries: 3,
                 },
-                backoffWithRandom: false
+                backoffWithRandom: false,
             }
 
             const res = await resolveWithRetry(getPrm(), config)
 
             expect(res).toBe('test')
-            expect(Operators.retryBackoff).toBeCalledWith({ ...config.retryStrategy, backoffDelay: Operators.exponentialBackoffDelay })
+            expect(Operators.retryBackoff).toBeCalledWith({
+                ...config.retryStrategy,
+                backoffDelay: Operators.exponentialBackoffDelay,
+            })
         })
 
         it('should set delay function based on random flag 2', async () => {
@@ -53,15 +59,18 @@ describe('resolveWithRetry Promises', () => {
                 retryStrategy: {
                     initialInterval: 100,
                     maxInterval: 100,
-                    maxRetries: 3
+                    maxRetries: 3,
                 },
-                backoffWithRandom: true
+                backoffWithRandom: true,
             }
 
             const res = await resolveWithRetry(getPrm(), config)
 
             expect(res).toBe('test')
-            expect(Operators.retryBackoff).toBeCalledWith({ ...config.retryStrategy, backoffDelay: Operators.backoffDelayWithRandom })
+            expect(Operators.retryBackoff).toBeCalledWith({
+                ...config.retryStrategy,
+                backoffDelay: Operators.backoffDelayWithRandom,
+            })
         })
 
         it('should set timeout for the promise', async () => {
@@ -72,7 +81,7 @@ describe('resolveWithRetry Promises', () => {
                 retryStrategy: {
                     initialInterval: 100,
                     maxInterval: 100,
-                    maxRetries: 3
+                    maxRetries: 3,
                 },
                 timeoutTime: 4000,
             }
@@ -91,7 +100,7 @@ describe('resolveWithRetry Promises', () => {
                 retryStrategy: {
                     initialInterval: 100,
                     maxInterval: 100,
-                    maxRetries: 3
+                    maxRetries: 3,
                 },
             }
 

@@ -1,5 +1,7 @@
-import { catchError, concatMap, defer, iif, Observable, retryWhen, tap, throwError, timer } from 'rxjs'
-import { RetryBackoffConfig } from '../types/retry-backoff.type'
+/* eslint-disable @typescript-eslint/no-empty-function */
+import type { Observable } from 'rxjs'
+import { catchError, concatMap, defer, iif, retryWhen, tap, throwError, timer } from 'rxjs'
+import type { RetryBackoffConfig } from '../types/retry-backoff.type'
 
 export function getDelay(backoffDelay: number, maxInterval: number) {
     return Math.min(backoffDelay, maxInterval)
@@ -30,8 +32,8 @@ export function retryBackoff(config: number | RetryBackoffConfig): <T>(source: O
         maxInterval = Infinity,
         shouldRetry = () => true,
         resetOnSuccess = false,
-        onFail = () => { },
-        onRetry = () => { },
+        onFail = () => {},
+        onRetry = () => {},
         backoffDelay = exponentialBackoffDelay,
     } = typeof config === 'number' ? { initialInterval: config } : config
     return <T>(source: Observable<T>) =>
@@ -44,7 +46,9 @@ export function retryBackoff(config: number | RetryBackoffConfig): <T>(source: O
                             const attempt = index++
                             return iif(
                                 () => attempt < maxRetries && shouldRetry(error),
-                                timer(getDelay(backoffDelay(attempt, initialInterval), maxInterval)).pipe(tap(() => onRetry(attempt + 1, error))),
+                                timer(getDelay(backoffDelay(attempt, initialInterval), maxInterval)).pipe(
+                                    tap(() => onRetry(attempt + 1, error)),
+                                ),
                                 throwError(error),
                             )
                         }),

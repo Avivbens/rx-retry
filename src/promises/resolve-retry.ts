@@ -1,6 +1,6 @@
 import { from, lastValueFrom, timeout } from 'rxjs'
 import { backoffDelayWithRandom, exponentialBackoffDelay, retryBackoff } from '../operators/retry-backoff'
-import { ResolveRetryConfig } from '../types'
+import type { ResolveRetryConfig } from '../types'
 import { DEFAULT_RESOLVE_RETRY_CONFIG } from './resolve-retry-config'
 
 /**
@@ -29,7 +29,10 @@ import { DEFAULT_RESOLVE_RETRY_CONFIG } from './resolve-retry-config'
  * @returns Resolved value of the promise with type T (Generic)
  */
 export function resolveWithRetry<T = any>(promise: Promise<T> | any, config: ResolveRetryConfig | number): Promise<T> {
-    const selectedConfig: ResolveRetryConfig = typeof config === 'number' ? { ...DEFAULT_RESOLVE_RETRY_CONFIG, retryStrategy: { initialInterval: config } } : config
+    const selectedConfig: ResolveRetryConfig =
+        typeof config === 'number'
+            ? { ...DEFAULT_RESOLVE_RETRY_CONFIG, retryStrategy: { initialInterval: config } }
+            : config
 
     const {
         retryStrategy,
@@ -39,11 +42,7 @@ export function resolveWithRetry<T = any>(promise: Promise<T> | any, config: Res
 
     retryStrategy.backoffDelay ??= backoffWithRandom ? backoffDelayWithRandom : exponentialBackoffDelay
 
-    const obs = from(promise as Promise<T>)
-        .pipe(
-            timeout(timeoutTime as number),
-            retryBackoff(retryStrategy),
-        )
+    const obs = from(promise as Promise<T>).pipe(timeout(timeoutTime as number), retryBackoff(retryStrategy))
 
     return lastValueFrom<T>(obs)
 }
