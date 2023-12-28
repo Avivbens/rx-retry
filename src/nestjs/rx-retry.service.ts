@@ -9,8 +9,9 @@ import { RX_RETRY_CONFIG_KEY } from './keys'
 @Injectable()
 export class RxRetryService {
     constructor(
-        @Inject(RX_RETRY_CONFIG_KEY) private readonly mainConfig: ResolveRetryConfig
-    ) { }
+        @Inject(RX_RETRY_CONFIG_KEY)
+        private readonly mainConfig: ResolveRetryConfig,
+    ) {}
 
     /**
      * Resolve promise with exponential backoff retry. Read documetation for more info.
@@ -18,8 +19,17 @@ export class RxRetryService {
      * @param config - Override the main config - only selected fields
      * @returns Resolved value of the promise with type T (Generic)
      */
-    public resolveWithRetry<T = any>(promise: Promise<any> | Observable<any>, config?: PartialDeep<ResolveRetryConfig>): Promise<T> {
-        const setConfig = config ? { ...this.mainConfig, ...config, retryStrategy: { ...this.mainConfig.retryStrategy, ...(config?.retryStrategy ?? {}) } } as ResolveRetryConfig : this.mainConfig
+    public resolveWithRetry<T = any>(
+        promise: Promise<any> | Observable<any>,
+        config?: PartialDeep<ResolveRetryConfig>,
+    ): Promise<T> {
+        const setConfig = config
+            ? ({
+                  ...this.mainConfig,
+                  ...config,
+                  retryStrategy: { ...this.mainConfig.retryStrategy, ...(config?.retryStrategy ?? {}) },
+              } as ResolveRetryConfig)
+            : this.mainConfig
         return resolveWithRetry(promise, setConfig)
     }
 
@@ -29,7 +39,9 @@ export class RxRetryService {
      * @param config - Override the main config - only selected fields
      */
     public resolveWithRetryOperator(config?: Partial<RetryBackoffConfig>): <T>(source: Observable<T>) => Observable<T> {
-        const setConfig = config ? { ...(this.mainConfig?.retryStrategy ?? {}), ...config } as RetryBackoffConfig : this.mainConfig?.retryStrategy as RetryBackoffConfig
+        const setConfig = config
+            ? ({ ...(this.mainConfig?.retryStrategy ?? {}), ...config } as RetryBackoffConfig)
+            : (this.mainConfig?.retryStrategy as RetryBackoffConfig)
         return retryBackoff(setConfig)
     }
 }
