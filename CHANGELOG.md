@@ -1,3 +1,10 @@
+## [2.1.3](https://github.com/Avivbens/rx-retry/compare/v2.1.2...v2.1.3) (2023-12-28)
+
+
+### Bug Fixes
+
+* trigger release ([c92b342](https://github.com/Avivbens/rx-retry/commit/c92b342cd75f32f56eaac594dbe235d25ac74f9a))
+
 ## [2.1.2](https://github.com/Avivbens/rx-retry/compare/v2.1.1...v2.1.2) (2023-12-28)
 
 
