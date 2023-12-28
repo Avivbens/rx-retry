@@ -36,12 +36,6 @@
                 "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
             }
         ],
-        [
-            "@semantic-release/github",
-            {
-                "githubUrl": "https://api.github.com/",
-                "githubApiPathPrefix": "/api/v3"
-            }
-        ]
+        "@semantic-release/github"
     ]
 }
