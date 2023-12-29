@@ -1,3 +1,11 @@
+## [2.1.5](https://github.com/Avivbens/rx-retry/compare/v2.1.4...v2.1.5) (2023-12-29)
+
+
+### Bug Fixes
+
+* add commitlint [skip ci] ([61faac5](https://github.com/Avivbens/rx-retry/commit/61faac5d2a19fa6efbd987602d4b4f449b65f210))
+* tsconfig remove exclude for mocks [skip ci] ([d63aea4](https://github.com/Avivbens/rx-retry/commit/d63aea4bc0c9526af7f72009410b0df3186ec075))
+
 ## [2.1.4](https://github.com/Avivbens/rx-retry/compare/v2.1.3...v2.1.4) (2023-12-28)
 
 
