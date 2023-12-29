@@ -25,6 +25,6 @@
         "target": "es2017",
         "useUnknownInCatchVariables": false
     },
-    "exclude": ["node_modules", "src/**/*.mock.ts"],
+    "exclude": ["node_modules"],
     "include": ["src/**/*"]
 }
