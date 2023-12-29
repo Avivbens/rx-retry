@@ -1,6 +1,6 @@
 ---
 name: '☑️ Checks Pipeline'
-description: 'Checks the pipeline for the current commit'
+description: 'Checks the codebase health'
 
 inputs:
     run-tests-command:
