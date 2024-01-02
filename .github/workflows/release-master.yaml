@@ -45,6 +45,7 @@ jobs:
               uses: actions/checkout@v3
               with:
                   fetch-depth: 0
+                  persist-credentials: false
 
             - name: Git Config
               run: |
@@ -69,7 +70,7 @@ jobs:
 
             - name: Release
               env:
-                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   GIT_AUTHOR_NAME: github-bot
                   GIT_AUTHOR_EMAIL: github-bot@gmail.com
                   GIT_COMMITTER_NAME: github-bot
