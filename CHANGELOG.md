@@ -1,3 +1,10 @@
+## [2.1.6](https://github.com/Avivbens/rx-retry/compare/v2.1.5...v2.1.6) (2024-01-02)
+
+
+### Bug Fixes
+
+* description of health-check [skip ci] ([3d9679c](https://github.com/Avivbens/rx-retry/commit/3d9679c3af0b8634ffd83e96004f2418d121e4b5))
+
 ## [2.1.5](https://github.com/Avivbens/rx-retry/compare/v2.1.4...v2.1.5) (2023-12-29)
 
 
