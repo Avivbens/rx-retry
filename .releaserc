@@ -1,5 +1,6 @@
 {
     "$schema": "https://json.schemastore.org/semantic-release.json",
+    "repositoryUrl": "https://github.com/Avivbens/rx-retry.git",
     "branches": [
         "+([0-9])?(.{+([0-9]),x}).x",
         "master",
