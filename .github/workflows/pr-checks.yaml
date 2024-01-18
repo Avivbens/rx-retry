@@ -37,11 +37,11 @@ jobs:
                   script: |
                       let fromBuffer = Buffer.from('${{ steps.semantic-release.outputs.releaseNote }}', 'base64').toString('utf8');
                       let releaseNote = fromBuffer.split('\n').filter((line) => !line.match(/^[[0-9:\sAMPM]+\]\s\[semantic-release\].*$/));
-                      if (!releaseNote.length) {
+                      let res = releaseNote.join('\n');
+                      if (!releaseNote.length || !res) {
                         return;
                       }
 
-                      let res = releaseNote.join('\n');
                       github.issues.createComment({
                           issue_number: context.issue.number,
                           owner: context.repo.owner,
