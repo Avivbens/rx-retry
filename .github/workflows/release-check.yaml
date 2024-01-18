@@ -1,0 +1,66 @@
+---
+name: Semantic Release Check 📝
+on:
+    pull_request:
+        branches:
+            - master
+
+permissions: write-all
+
+jobs:
+    PR-checks:
+        # https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/using-self-hosted-runners-in-a-workflow
+        runs-on: ubuntu-latest
+        name: Semantic Release Check 📝
+        steps:
+            - name: 📀 Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: 🖥️ Setup Env
+              uses: ./.github/workflows/install
+
+            - name: 🔬 Check semantic versioning
+              id: semantic-release
+              run: |
+                  GITHUB_REF=${{ github.head_ref }}
+                  npx semantic-release --no-ci --dry-run --plugins @semantic-release/commit-analyzer,@semantic-release/release-notes-generator --branches ${{ github.head_ref }} > output.txt
+                  OUTPUT=$(cat output.txt | base64 -w 0)
+                  echo "::set-output name=releaseNote::$OUTPUT"
+
+            - name: 📝 Report semantic versioning
+              uses: actions/github-script@v3
+              if: ${{ steps.semantic-release.outputs.releaseNote != '' }}
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  script: |
+                      // build release note
+                      const fromBuffer = Buffer.from('${{ steps.semantic-release.outputs.releaseNote }}', 'base64').toString('utf8');
+                      const matchRegex = /^[[0-9:\sAMPM]+\]\s\[semantic-release\].*$/;
+                      const releaseNote = fromBuffer.split('\n').filter((line) => !line.match(matchRegex));
+                      const res = releaseNote.join('\n');
+                      if (!releaseNote.length || !res) {
+                        return;
+                      }
+
+                      const body = `The new semantic report is: \n ${res}`;
+
+                      // get last comment
+                      const comments = await github.issues.listComments({
+                          issue_number: context.issue.number,
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                      });
+
+                      const alreadyCommented = comments.data.find((comment) => comment.body === body);
+                      if (alreadyCommented) {
+                        return;
+                      }
+
+                      github.issues.createComment({
+                          issue_number: context.issue.number,
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          body,
+                      })

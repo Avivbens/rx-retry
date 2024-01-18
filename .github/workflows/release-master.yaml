@@ -52,14 +52,8 @@ jobs:
                   git config --global user.name "github-bot"
                   git config --global user.email "github-bot@gmail.com"
 
-            - name: Setup Node
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 16
-
-            - name: Install Dependencies
-              run: |
-                  npm ci --no-fund --no-audit --ignore-scripts
+            - name: 🖥️ Setup Env
+              uses: ./.github/workflows/install
 
             - name: Build
               run: npm run build

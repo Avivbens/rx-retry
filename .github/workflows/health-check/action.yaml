@@ -36,15 +36,8 @@ inputs:
 runs:
     using: composite
     steps:
-        - name: 🖥️ Setup Node
-          uses: actions/setup-node@v3
-          with:
-              node-version: 16
-
-        - name: 🔗 Install Dependencies
-          shell: bash
-          run: |
-              npm ci --no-fund --no-audit --ignore-scripts
+        - name: 🖥️ Setup Env
+          uses: ./.github/workflows/install
 
         - name: 🧪 Test
           if: ${{ inputs.run-tests == 'true' }}
