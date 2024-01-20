@@ -1,6 +1,7 @@
 export interface RetryBackoffConfig {
     /**
      * Initial interval. It will eventually go as high as maxInterval.
+     * in milliseconds.
      * */
     initialInterval: number
 
@@ -11,6 +12,7 @@ export interface RetryBackoffConfig {
 
     /**
      * Maximum delay between retries.
+     * in milliseconds.
      * */
     maxInterval?: number
 

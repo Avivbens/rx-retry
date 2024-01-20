@@ -4,6 +4,7 @@ import type { ResolveRetryConfig } from '../types'
 import { RX_RETRY_CONFIG_KEY } from './keys'
 import { RxRetryService } from './rx-retry.service'
 
+// TODO - implement with NestJS AsyncOptions
 @Module({})
 export class RxRetryModule {
     static register(config: ResolveRetryConfig, isGlobal = false): DynamicModule {

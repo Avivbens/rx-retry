@@ -3,6 +3,7 @@ import type { RetryBackoffConfig } from './retry-backoff.type'
 export interface ResolveRetryConfig {
     /**
      * Fail promise and execute retry at this timeout.
+     * in milliseconds.
      */
     timeoutTime?: number
 
