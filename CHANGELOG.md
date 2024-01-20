@@ -1,3 +1,17 @@
+# [3.0.0](https://github.com/Avivbens/rx-retry/compare/v2.1.6...v3.0.0) (2024-01-20)
+
+
+### Bug Fixes
+
+* **deps:** bump up deps ([aa89eb6](https://github.com/Avivbens/rx-retry/commit/aa89eb6a851aecfd8f09be29ac9c90cbb0469692))
+* **engine:** set ts target to es2021 ([5ea3dc3](https://github.com/Avivbens/rx-retry/commit/5ea3dc3aae2eba81022e68f25334716a01d3baac))
+
+
+### BREAKING CHANGES
+
+* **deps:** drop support for nestjs v8, now required - version > 9.0.0
+* **engine:** drop support for EOL nodejs, now support - version > 16.0.0
+
 ## [2.1.6](https://github.com/Avivbens/rx-retry/compare/v2.1.5...v2.1.6) (2024-01-02)
 
 
