@@ -1,3 +1,18 @@
+# [4.0.0](https://github.com/Avivbens/rx-retry/compare/v3.0.0...v4.0.0) (2024-01-20)
+
+
+### Bug Fixes
+
+* **configuration:** better async provider using NestJS 9 ConfigurableModuleClass ([af1f644](https://github.com/Avivbens/rx-retry/commit/af1f6446a459641c52335d50aa2aa005c5a2fe6d))
+* **docs, configuration:** better docs for each type, useJitter instead of old backoffWithRandom ([871b582](https://github.com/Avivbens/rx-retry/commit/871b582a3203981245dc022b158176ab6880bee3))
+* **types:** add docs for time measurement ([c090f9a](https://github.com/Avivbens/rx-retry/commit/c090f9a2bb3641eae55292b05b10ba224bf1da07))
+
+
+### BREAKING CHANGES
+
+* **docs, configuration:** drop backoffWithRandom in favor of useJitter over RxRetry configuration
+* **configuration:** isGlobal property over RxRetryModule is no longer available
+
 # [3.0.0](https://github.com/Avivbens/rx-retry/compare/v2.1.6...v3.0.0) (2024-01-20)
 
 
