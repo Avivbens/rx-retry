@@ -5,12 +5,12 @@ import { resolveWithRetry } from '../promises'
 import type { RetryBackoffConfig } from '../types'
 import { ResolveRetryConfig } from '../types'
 import type { PartialDeep } from '../types/deep-partial'
-import { RX_RETRY_CONFIG_KEY } from './keys'
+import { MODULE_OPTIONS_TOKEN } from './rx-retry.module-builder'
 
 @Injectable()
 export class RxRetryService {
     constructor(
-        @Inject(RX_RETRY_CONFIG_KEY)
+        @Inject(MODULE_OPTIONS_TOKEN)
         private readonly mainConfig: ResolveRetryConfig,
     ) {}
 

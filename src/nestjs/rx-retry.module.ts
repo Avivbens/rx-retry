@@ -1,45 +1,9 @@
-import type { DynamicModule, Provider } from '@nestjs/common'
 import { Module } from '@nestjs/common'
-import type { ResolveRetryConfig } from '../types'
-import { RX_RETRY_CONFIG_KEY } from './keys'
+import { ConfigurableModuleClass } from './rx-retry.module-builder'
 import { RxRetryService } from './rx-retry.service'
 
-// TODO - implement with NestJS AsyncOptions
-@Module({})
-export class RxRetryModule {
-    static register(config: ResolveRetryConfig, isGlobal = false): DynamicModule {
-        return {
-            module: RxRetryModule,
-            providers: [
-                {
-                    provide: RX_RETRY_CONFIG_KEY,
-                    useValue: config,
-                },
-                RxRetryService,
-            ],
-            exports: [RxRetryService],
-            global: isGlobal,
-        }
-    }
-
-    static registerAsync(config: AsyncProps<ResolveRetryConfig>, isGlobal = false): DynamicModule {
-        return {
-            module: RxRetryModule,
-            providers: [
-                {
-                    ...config,
-                    provide: RX_RETRY_CONFIG_KEY,
-                } as Provider,
-                RxRetryService,
-            ],
-            exports: [RxRetryService],
-            global: isGlobal,
-        }
-    }
-}
-
-export interface AsyncProps<T> {
-    useFactory: (...args: any[]) => Promise<T>
-    inject: any[]
-    imports?: any[]
-}
+@Module({
+    providers: [RxRetryService],
+    exports: [RxRetryService],
+})
+export class RxRetryModule extends ConfigurableModuleClass {}

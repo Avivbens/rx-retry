@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import type { Provider } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import type { ResolveRetryConfig } from '../../../src/types'
-import type { AsyncProps } from '../rx-retry.module'
 
 export const SYNC_CONFIG: ResolveRetryConfig = {
     timeoutTime: 1000,
@@ -13,7 +12,7 @@ export const SYNC_CONFIG: ResolveRetryConfig = {
     },
 }
 
-export const ASYNC_CONFIG: AsyncProps<ResolveRetryConfig> = {
+export const ASYNC_CONFIG: Omit<Provider<ResolveRetryConfig>, 'provide'> = {
     inject: [ConfigService],
     useFactory: async (conf: ConfigService) => SYNC_CONFIG,
 }
