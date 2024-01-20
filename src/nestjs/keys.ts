@@ -1,1 +1,0 @@
-export const RX_RETRY_CONFIG_KEY = Symbol('RX_RETRY_CONFIG_KEY')

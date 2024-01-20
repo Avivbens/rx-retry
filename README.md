@@ -3,6 +3,7 @@
 </h1>
 
 ## Has default configuration of random-backoff retry and backoff retry
+
 Read this article for more details:
 [AWS Exponential Backoff and Jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/)
 <br>
@@ -21,20 +22,20 @@ npm i rx-retry
 ## Usage
 
 ```typescript
-import { resolveWithRetry, ResolveRetryConfig, retryBackoff } from 'rx-retry';
+import { resolveWithRetry, ResolveRetryConfig, retryBackoff } from 'rx-retry'
 import { throwError } from 'rxjs'
 
 // Use on a promise
-(() => {
+;(() => {
     const prm = new Promise((resolve, reject) => {
         setTimeout(() => {
-            reject(new Error('Promise error'));
-        }, 1000);
-    });
+            reject(new Error('Promise error'))
+        }, 1000)
+    })
 
     const configuration: ResolveRetryConfig = {
         timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
-        backoffWithRandom: true, // backoff strategy with random + exponantial delay, default is true
+        useJitter: true, // backoff strategy with random + exponantial delay, default is true
         retryStrategy: {
             initialInterval: 1000, // ms
             maxRetries: 3,
@@ -43,18 +44,18 @@ import { throwError } from 'rxjs'
             },
             maxInterval: 10000, // ms
             shouldRetry: (error) => true, // check if retry needed, default is always true
-        }
+        },
     }
-    const res = await resolveWithRetry(prm, configuration);
-})();
+    const res = await resolveWithRetry(prm, configuration)
+})()
 
 // Use on Observable, will be converted into promise
-(() => {
+;(() => {
     const obs = throwError('Observable error')
 
     const configuration: ResolveRetryConfig = {
         timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
-        backoffWithRandom: true, // backoff strategy with random + exponantial delay, default is true
+        useJitter: true, // backoff strategy with random + exponantial delay, default is true
         retryStrategy: {
             initialInterval: 1000, // ms
             maxRetries: 3,
@@ -63,23 +64,23 @@ import { throwError } from 'rxjs'
             },
             maxInterval: 10000, // ms
             shouldRetry: (error) => true, // check if retry needed, default is always true
-        }
+        },
     }
-    const res = await resolveWithRetry(obs, configuration);
-})();
+    const res = await resolveWithRetry(obs, configuration)
+})()
 
 // Using the custom operator function in a pipe
-(() => {
+;(() => {
     const obs = throwError('Observable error')
 
     obs.pipe(
-            retryBackoff({
-                initialInterval: 1000,
-                maxInterval: 10000,
-                maxRetries: 5,
-            })
-        )
-})();
+        retryBackoff({
+            initialInterval: 1000,
+            maxInterval: 10000,
+            maxRetries: 5,
+        }),
+    )
+})()
 ```
 
 <br>
@@ -96,20 +97,23 @@ import { RxRetryModule } from 'rx-retry'
 
 @Module({
     imports: [
-        RxRetryModule.register({
-            timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
-            backoffWithRandom: true, // backoff strategy with random + exponantial delay, default is true
-            retryStrategy: {
-                initialInterval: 1000, // ms
-                maxRetries: 3,
-                maxInterval: 10000, // ms
-                shouldRetry: (error) => true, // check if retry needed, default is always true
-            }
-        }, true) // set module as global
+        RxRetryModule.register(
+            {
+                timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
+                useJitter: true, // backoff strategy with random + exponantial delay, default is true
+                retryStrategy: {
+                    initialInterval: 1000, // ms
+                    maxRetries: 3,
+                    maxInterval: 10000, // ms
+                    shouldRetry: (error) => true, // check if retry needed, default is always true
+                },
+            },
+            true,
+        ), // set module as global
     ],
-    providers: [TestingService]
+    providers: [TestingService],
 })
-export class TestingModule { }
+export class TestingModule {}
 ```
 
 <br>
@@ -131,32 +135,36 @@ import { RxRetryModule } from 'rx-retry'
             cache: true,
         }),
 
-        RxRetryModule.registerAsync({
-            inject: [ConfigService],
-            useFactory: async (conf: ConfigService) => {
-                const configuration = {
-                    timeoutTime: +conf.get('timeoutTime'), // set timeout to fail the promise and retry, default is 0
-                    backoffWithRandom: !!conf.get('backoffWithRandom'), // backoff strategy with random + exponantial delay, default is true
-                    retryStrategy: {
-                        initialInterval: +conf.get('initialInterval'), // ms
-                        maxRetries: +conf.get('maxRetries'),
-                        maxInterval: 10000, // ms
-                    },
-                }
+        RxRetryModule.registerAsync(
+            {
+                inject: [ConfigService],
+                useFactory: async (conf: ConfigService) => {
+                    const configuration = {
+                        timeoutTime: +conf.get('timeoutTime'), // set timeout to fail the promise and retry, default is 0
+                        useJitter: !!conf.get('useJitter'), // backoff strategy with random + exponantial delay, default is true
+                        retryStrategy: {
+                            initialInterval: +conf.get('initialInterval'), // ms
+                            maxRetries: +conf.get('maxRetries'),
+                            maxInterval: 10000, // ms
+                        },
+                    }
 
-                return configuration
-            }
-        }, true) // set module as global
+                    return configuration
+                },
+            },
+            true,
+        ), // set module as global
     ],
-    providers: [TestingService]
+    providers: [TestingService],
 })
-export class TestingModule { }
+export class TestingModule {}
 ```
 
 <br>
 <br>
 
 ### Service usage
+
 ```typescript
 import { Injectable } from '@nestjs/common'
 import { RxRetryService } from 'rx-retry'
@@ -164,10 +172,7 @@ import { catchError, from, Observable, of, throwError } from 'rxjs'
 
 @Injectable()
 export class TestingService {
-
-    constructor(
-        private readonly rxRetry: RxRetryService
-    ) { }
+    constructor(private readonly rxRetry: RxRetryService) {}
 
     public resolveWithRetry() {
         return this.rxRetry.resolveWithRetry(this._getPromise())
@@ -179,8 +184,8 @@ export class TestingService {
             retryStrategy: {
                 onRetry: (attempt: number, error: Error) => {
                     this.logger.log(`Retry attempt ${attempt}`)
-                }
-            }
+                },
+            },
         })
     }
 
@@ -199,7 +204,7 @@ export class TestingService {
                 onRetry: (attempt: number, error: Error) => {
                     console.log('attempt :>> ', attempt)
                 },
-            })
+            }),
         )
     }
 
@@ -211,10 +216,9 @@ export class TestingService {
                 onRetry: (attempt: number, error: Error) => {
                     this.logger.debug('attempt :>> ', attempt)
                 },
-            })
+            }),
         )
     }
-
 
     private _getObs() {
         return throwError('Observable error')

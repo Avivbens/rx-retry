@@ -1,5 +1,5 @@
 import { catchError, lastValueFrom, of, throwError } from 'rxjs'
-import type { RetryBackoffConfig } from '../types'
+import type { RetryBackoffConfig } from '../models'
 import * as Functions from './retry-backoff'
 import {
     backoffDelayWithRandom,

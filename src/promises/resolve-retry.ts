@@ -1,6 +1,6 @@
 import { from, lastValueFrom, timeout } from 'rxjs'
 import { backoffDelayWithRandom, exponentialBackoffDelay, retryBackoff } from '../operators/retry-backoff'
-import type { ResolveRetryConfig } from '../types'
+import type { ResolveRetryConfig } from '../models'
 import { DEFAULT_RESOLVE_RETRY_CONFIG } from './resolve-retry-config'
 
 /**
@@ -14,7 +14,7 @@ import { DEFAULT_RESOLVE_RETRY_CONFIG } from './resolve-retry-config'
 
     const configuration: ResolveRetryConfig = {
         timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
-        backoffWithRandom: true, // backoff strategy with random + exponantial delay, default is true
+        useJitter: true, // backoff strategy with random + exponantial delay, default is true
         retryStrategy: {
             initialInterval: 1000, // ms
             maxRetries: 3,
@@ -36,11 +36,11 @@ export function resolveWithRetry<T = any>(promise: Promise<T> | any, config: Res
 
     const {
         retryStrategy,
-        backoffWithRandom = DEFAULT_RESOLVE_RETRY_CONFIG.backoffWithRandom,
+        useJitter = DEFAULT_RESOLVE_RETRY_CONFIG.useJitter,
         timeoutTime = DEFAULT_RESOLVE_RETRY_CONFIG.timeoutTime,
     } = selectedConfig as ResolveRetryConfig
 
-    retryStrategy.backoffDelay ??= backoffWithRandom ? backoffDelayWithRandom : exponentialBackoffDelay
+    retryStrategy.backoffDelay ??= useJitter ? backoffDelayWithRandom : exponentialBackoffDelay
 
     const obs = from(promise as Promise<T>).pipe(timeout(timeoutTime as number), retryBackoff(retryStrategy))
 

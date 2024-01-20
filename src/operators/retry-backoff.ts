@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import type { Observable } from 'rxjs'
 import { catchError, concatMap, defer, iif, retryWhen, tap, throwError, timer } from 'rxjs'
-import type { RetryBackoffConfig } from '../types/retry-backoff.type'
+import type { RetryBackoffConfig } from '../models/retry-backoff.model'
 
 export function getDelay(backoffDelay: number, maxInterval: number) {
     return Math.min(backoffDelay, maxInterval)
