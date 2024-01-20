@@ -9,7 +9,7 @@
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
         "incremental": false,
-        "lib": ["es2017", "es7", "es6", "DOM"],
+        "lib": ["ES2021"],
         "module": "Node16",
         "noFallthroughCasesInSwitch": false,
         "noImplicitAny": true,
@@ -22,7 +22,7 @@
         "strictBindCallApply": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": false,
-        "target": "es2017",
+        "target": "ES2021",
         "useUnknownInCatchVariables": false
     },
     "exclude": ["node_modules"],
