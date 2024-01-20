@@ -16,6 +16,9 @@
         "prepublish": "npm run build",
         "pre-commit": "pretty-quick --staged"
     },
+    "engines": {
+        "node": ">=16.0.0"
+    },
     "homepage": "https://github.com/Avivbens/rx-retry",
     "repository": {
         "type": "git",
