@@ -1,6 +1,6 @@
 import { from, lastValueFrom, timeout } from 'rxjs'
 import { backoffDelayWithRandom, exponentialBackoffDelay, retryBackoff } from '../operators/retry-backoff'
-import type { ResolveRetryConfig } from '../types/index'
+import type { ResolveRetryConfig } from '../models'
 import { DEFAULT_RESOLVE_RETRY_CONFIG } from './resolve-retry-config'
 
 /**

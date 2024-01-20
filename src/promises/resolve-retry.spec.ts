@@ -1,4 +1,4 @@
-import type { ResolveRetryConfig } from '../types'
+import type { ResolveRetryConfig } from '../models'
 import { resolveWithRetry } from './resolve-retry'
 import * as Operators from '../operators/retry-backoff'
 import * as RX from 'rxjs'

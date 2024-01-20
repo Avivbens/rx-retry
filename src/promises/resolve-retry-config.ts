@@ -1,4 +1,4 @@
-import type { ResolveRetryConfig } from '../types/index'
+import type { ResolveRetryConfig } from '../models'
 
 export const DEFAULT_RESOLVE_RETRY_CONFIG: ResolveRetryConfig = {
     timeoutTime: 0,

@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@nestjs/common'
 import type { Observable } from 'rxjs'
 import { retryBackoff } from '../operators'
 import { resolveWithRetry } from '../promises'
-import type { RetryBackoffConfig } from '../types'
-import { ResolveRetryConfig } from '../types'
-import type { PartialDeep } from '../types/deep-partial'
+import { ResolveRetryConfig } from '../models'
+import type { RetryBackoffConfig } from '../models'
+import type { PartialDeep } from '../models/deep-partial.model'
 import { MODULE_OPTIONS_TOKEN } from './rx-retry.module-builder'
 
 @Injectable()

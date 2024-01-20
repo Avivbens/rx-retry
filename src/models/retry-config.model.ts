@@ -1,4 +1,4 @@
-import type { RetryBackoffConfig } from './retry-backoff.type'
+import type { RetryBackoffConfig } from './retry-backoff.model'
 
 export interface ResolveRetryConfig {
     /**
