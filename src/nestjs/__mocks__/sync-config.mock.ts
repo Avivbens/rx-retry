@@ -4,7 +4,7 @@ import type { ResolveRetryConfig } from '../../../src/types'
 
 export const SYNC_CONFIG: ResolveRetryConfig = {
     timeoutTime: 1000,
-    backoffWithRandom: true,
+    useJitter: true,
     retryStrategy: {
         initialInterval: 1000,
         maxInterval: 10000,

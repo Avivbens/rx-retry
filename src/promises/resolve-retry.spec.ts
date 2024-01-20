@@ -38,7 +38,7 @@ describe('resolveWithRetry Promises', () => {
                     maxInterval: 100,
                     maxRetries: 3,
                 },
-                backoffWithRandom: false,
+                useJitter: false,
             }
 
             const res = await resolveWithRetry(getPrm(), config)
@@ -61,7 +61,7 @@ describe('resolveWithRetry Promises', () => {
                     maxInterval: 100,
                     maxRetries: 3,
                 },
-                backoffWithRandom: true,
+                useJitter: true,
             }
 
             const res = await resolveWithRetry(getPrm(), config)
