@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/Avivbens/rx-retry/compare/v4.0.0...v4.1.0) (2024-02-13)
+
+
+### Features
+
+* support `isGlobal` property for global app access - configure once ([cd93807](https://github.com/Avivbens/rx-retry/commit/cd9380783fcdd0e50920f9eb7b1935546f66000d))
+
 # [4.0.0](https://github.com/Avivbens/rx-retry/compare/v3.0.0...v4.0.0) (2024-01-20)
 
 
