@@ -97,19 +97,17 @@ import { RxRetryModule } from 'rx-retry'
 
 @Module({
     imports: [
-        RxRetryModule.register(
-            {
-                timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
-                useJitter: true, // backoff strategy with random + exponantial delay, default is true
-                retryStrategy: {
-                    initialInterval: 1000, // ms
-                    maxRetries: 3,
-                    maxInterval: 10000, // ms
-                    shouldRetry: (error) => true, // check if retry needed, default is always true
-                },
+        RxRetryModule.register({
+            timeoutTime: 5000, // set timeout to fail the promise and retry, default is 0
+            useJitter: true, // backoff strategy with random + exponantial delay, default is true
+            retryStrategy: {
+                initialInterval: 1000, // ms
+                maxRetries: 3,
+                maxInterval: 10000, // ms
+                shouldRetry: (error) => true, // check if retry needed, default is always true
             },
-            true,
-        ), // set module as global
+            isGlobal: true, // set module as global
+        }),
     ],
     providers: [TestingService],
 })
@@ -135,25 +133,23 @@ import { RxRetryModule } from 'rx-retry'
             cache: true,
         }),
 
-        RxRetryModule.registerAsync(
-            {
-                inject: [ConfigService],
-                useFactory: async (conf: ConfigService) => {
-                    const configuration = {
-                        timeoutTime: +conf.get('timeoutTime'), // set timeout to fail the promise and retry, default is 0
-                        useJitter: !!conf.get('useJitter'), // backoff strategy with random + exponantial delay, default is true
-                        retryStrategy: {
-                            initialInterval: +conf.get('initialInterval'), // ms
-                            maxRetries: +conf.get('maxRetries'),
-                            maxInterval: 10000, // ms
-                        },
-                    }
+        RxRetryModule.registerAsync({
+            inject: [ConfigService],
+            isGlobal: true, // set module as global
+            useFactory: async (conf: ConfigService) => {
+                const configuration = {
+                    timeoutTime: +conf.get('timeoutTime'), // set timeout to fail the promise and retry, default is 0
+                    useJitter: !!conf.get('useJitter'), // backoff strategy with random + exponantial delay, default is true
+                    retryStrategy: {
+                        initialInterval: +conf.get('initialInterval'), // ms
+                        maxRetries: +conf.get('maxRetries'),
+                        maxInterval: 10000, // ms
+                    },
+                }
 
-                    return configuration
-                },
+                return configuration
             },
-            true,
-        ), // set module as global
+        }),
     ],
     providers: [TestingService],
 })

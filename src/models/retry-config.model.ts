@@ -27,3 +27,10 @@ export interface ResolveRetryConfig {
      */
     retryStrategy: RetryBackoffConfig
 }
+
+export type ModuleConfiguration = ResolveRetryConfig & {
+    /**
+     * @description If true, the module will be registered as a global module.
+     */
+    isGlobal?: boolean
+}
