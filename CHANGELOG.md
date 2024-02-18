@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/Avivbens/rx-retry/compare/v4.1.0...v4.1.1) (2024-02-18)
+
+
+### Bug Fixes
+
+* removeComments to false for build ([ed1433e](https://github.com/Avivbens/rx-retry/commit/ed1433ec54e7be4c1c6c3bab44e0d2ee3ae90dd9))
+
 # [4.1.0](https://github.com/Avivbens/rx-retry/compare/v4.0.0...v4.1.0) (2024-02-13)
 
 
