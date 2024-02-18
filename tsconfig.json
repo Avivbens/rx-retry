@@ -14,7 +14,7 @@
         "noFallthroughCasesInSwitch": false,
         "noImplicitAny": true,
         "outDir": "./lib",
-        "removeComments": true,
+        "removeComments": false,
         "rootDir": "./src",
         "skipLibCheck": true,
         "sourceMap": true,
