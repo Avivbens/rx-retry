@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/Avivbens/rx-retry/compare/v4.1.1...v4.1.2) (2024-03-02)
+
+
+### Bug Fixes
+
+* **deps:** resolve vulnerability ([87997d9](https://github.com/Avivbens/rx-retry/commit/87997d90096c9a0cdc0f58e49edfb38240f5c5fc))
+
 ## [4.1.1](https://github.com/Avivbens/rx-retry/compare/v4.1.0...v4.1.1) (2024-02-18)
 
 
