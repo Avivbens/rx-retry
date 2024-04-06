@@ -14,7 +14,7 @@ jobs:
         name: Semantic Release Check 📝
         steps:
             - name: 📀 Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 0
 
@@ -30,7 +30,7 @@ jobs:
                   echo "::set-output name=releaseNote::$OUTPUT"
 
             - name: 📝 Report semantic versioning
-              uses: actions/github-script@v3
+              uses: actions/github-script@v7
               if: ${{ steps.semantic-release.outputs.releaseNote != '' }}
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,7 +55,7 @@ jobs:
                       const body = [SEMANTIC_RELEASE_BODY_HEADER, res].join('\n');
 
                       // get last comment
-                      const comments = await github.issues.listComments({
+                      const comments = await github.rest.issues.listComments({
                           issue_number: context.issue.number,
                           owner: context.repo.owner,
                           repo: context.repo.repo
@@ -68,7 +68,7 @@ jobs:
 
                       // delete comments
                       const prms = commentsToDelete.map((comment) =>
-                          github.issues.deleteComment({
+                          github.rest.issues.deleteComment({
                               comment_id: comment.id,
                               owner: context.repo.owner,
                               repo: context.repo.repo
@@ -78,7 +78,7 @@ jobs:
                       await Promise.all(prms);
 
                       // create new comment for release note
-                      github.issues.createComment({
+                      github.rest.issues.createComment({
                           issue_number: context.issue.number,
                           owner: context.repo.owner,
                           repo: context.repo.repo,
