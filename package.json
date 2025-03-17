@@ -44,7 +44,7 @@
     "author": "Aviv Ben Shahar",
     "license": "MIT",
     "dependencies": {
-        "rxjs": "^7.8.1"
+        "rxjs": "^7.8.2"
     },
     "peerDependencies": {
         "@nestjs/common": ">=9.0.0"
